@@ -59,6 +59,8 @@ tokens =[
 
 ]
 
+tokens = list(reserved.values()) + list(tokens) 
+
 # Regular expression rules for simple tokens
 t_LT = r'\<'
 t_GT = r'\>'
