@@ -56,6 +56,8 @@ tokens =[
 	'ASSIGN',
 	'COMMA',
 	'TILDE'
+	'QUOTATION'
+	'UNDERSCORE'
 
 ]
 
@@ -64,18 +66,18 @@ tokens = list(reserved.values()) + list(tokens)
 # Regular expression rules for simple tokens
 t_LT = r'\<'
 t_GT = r'\>'
-t_LEQ = r'\<='
-t_GEQ = r'\>='
-t_EQ = r'\=='
-t_NEQ = r'\!='
-t_NOT = r'\!'
-t_OR = r'\|'
-t_AND = r'\&&'
+t_LEQ = r'\<\='
+t_GEQ = r'\>\='
+t_EQ = r'\=\='
+t_NEQ = r'\!\='
+t_NOT = r'\!' #not on on our paper
+t_OR = r'\|' #not on on our paper
+t_AND = r'\&\&' #not on on our paper
 t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_MUL = r'\*'
 t_DIV = r'\/'
-t_MOD = r'\%'
+t_MOD = r'\%' #not on on our paper
 t_OPENPAR = r'\('
 t_CLOSEPAR = r'\)'
 t_OPENCURLY = r'\{'
@@ -84,6 +86,8 @@ t_OPENBRACE = r'\['
 t_CLOSEBRACE = r'\]'
 t_ASSIGN = r'\='
 t_TILDE = r'\~'
+t_QUOTATION = r'\"\"'
+t_UNDERSCORE = r'\_'
 
 # Ignore whitespaces
 t_ignore = r' '
@@ -92,7 +96,6 @@ def t_FLTLIT(t):
 	r'\d\.\d+'
 	t.value = float(t.value)
 	return t
-
 
 def t_INTLIT(t):
 	r'\d+'
@@ -126,8 +129,6 @@ def t_error(t):
 	print("SYNTAX ERROR: Illegal character: '%s' \n\tLine number: %d" (t.value[0], t.lineno))
 	t.lexer.skip(1)
 
- # Build the lexer
-lexer = lex.lex()
-
-
+# Build the lexer already did in main.py
+#lexer = lex.lex()
 
