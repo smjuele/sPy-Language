@@ -13,19 +13,37 @@ def p_main_program(p):
                      | comienzo classes fin
                      | comienzo function_heading fin                    
     '''
-def p_statements(p):
+def p_statement(p):
     '''
-        statements  : identifier_list EQ expression
+        statement  : identifier_list EQ expression
                     | introducir type
                     | imprimir OPENPAR identifier_list CLOSEPAR
                     | imprimir QUOTATION identifier_list QUOTATION
                     | regresso OPENPAR expression_list CLOSEPAR
                     | si OPENPAR expression_list CLOSEPAR otro statements
                     | optional_statements
-                    | if #ginbutang ko nlg sa isa ka function pra nd tma kdamo py same thought jpon
+                    | if 
                     | while 
                     | comment
     '''
+    
+def p_statement_print(t):
+  'statement : imprimir OPENPAR expression CLOSEPAR'
+  print(t[3])
+    
+def p_statement_print_string(t):
+  'statement : imprimir OPENPAR STRING CLOSEPAR'
+  print(t[3])
+  
+def p_statement_print_var(t):
+  'statement : VAR ASSIGN expression PRINT OPENPAR VAR CLOSEPAR'
+  print("Result: ", t[3])
+
+def p_statement_print_var_string(t):
+  'statement : VAR ASSIGN STRING PRINT OPENPAR VAR CLOSEPAR'
+  print("Result: ", t[3])
+  
+
 
 def p_identifier_list(p):
     '''
@@ -112,15 +130,15 @@ def p_type(p):
     '''
     p[0] = (p[1], p[2])
 
-def p_optional_statements(p):
+def p_optional_statement(p):
     '''
-        optional_statements: statement_list
+        optional_statement: statement_list
                            | empty 
     '''
 
 def p_statement_list(p):
     '''
-        statement_list : statements
+        statement_list : statement
                        | statement_list statement 
 
     '''
