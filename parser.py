@@ -1,11 +1,11 @@
-#!/usr/bin/python
-
 import ply.yacc as yacc
+from lexer import *  
 
 precedence = (
-	('left','PLUS','MINUS'),
-	('left','MUL','DIV', 'MOD'),
+  ('left','PLUS','MINUS'),
+  ('left','MUL','DIV', 'MOD'),
 )
+
 
 def p_main_program(p):    
     '''
@@ -13,9 +13,9 @@ def p_main_program(p):
                      | comienzo classes fin
                      | comienzo function_heading fin                    
     '''
-def p_statement(p):
+def p_statements(p):
     '''
-        statement  : identifier_list EQ expression
+        statements  : identifier_list EQ expression
                     | introducir type
                     | imprimir OPENPAR identifier_list CLOSEPAR
                     | imprimir QUOTATION identifier_list QUOTATION
@@ -24,23 +24,23 @@ def p_statement(p):
                     | optional_statements
                     | if 
                     | while 
-                    | comment
+                    | COMMENT
     '''
     
 def p_statement_print(t):
-  'statement : imprimir OPENPAR expression CLOSEPAR'
+  'statements : imprimir OPENPAR expression CLOSEPAR'
   print(t[3])
     
 def p_statement_print_string(t):
-  'statement : imprimir OPENPAR STRING CLOSEPAR'
+  'statements : imprimir OPENPAR STRLIT CLOSEPAR'
   print(t[3])
   
 def p_statement_print_var(t):
-  'statement : VAR ASSIGN expression PRINT OPENPAR VAR CLOSEPAR'
+  'statements : VAR ASSIGN expression imprimir OPENPAR VAR CLOSEPAR'
   print("Result: ", t[3])
 
 def p_statement_print_var_string(t):
-  'statement : VAR ASSIGN STRING PRINT OPENPAR VAR CLOSEPAR'
+  'statements : VAR ASSIGN STRLIT imprimir OPENPAR VAR CLOSEPAR'
   print("Result: ", t[3])
   
 
@@ -53,9 +53,10 @@ def p_identifier_list(p):
                         | UNDERSCORE
                         | empty
     '''
+
 def p_empty(p):
     '''
-        empty: 
+        empty : 
     '''
     p[0] = None
 
@@ -74,14 +75,15 @@ def p_logical_expression(p):
     '''
         logical_expression  : expression '<' expression 
                             | expression '>' expression
-                            | expression '<=' expression
-                            | expression '>=' expression
+                            | expression LT expression
+                            | expression GT expression
                             | expression '=' expression
-                            | expression '!=' expression
-                            | expression '==' expression
+                            | expression NEQ expression
+                            | expression EQ expression
                             | expression '!' expression
-                            | expression '||' expression
-                            | expression '&&' expression
+                            | expression OR expression
+                            | expression AND expression
+                            | NOT expression
     '''
     if p[2]=='<':
         p[0] = p[1] < p[3]
@@ -99,6 +101,8 @@ def p_logical_expression(p):
         p[0]= p[1] or p[3]
     elif p[2]=='&&':
         p[0]= p[1] and p[3]
+    elif p[1] == 'NOT':
+        p[0] = not p[2]
 
 def p_arithmetic_expression(p):
     '''
@@ -119,33 +123,32 @@ def p_arithmetic_expression(p):
     elif p[2]=='%':
         p[0]= p[1] % p[3]
 
-
 def p_type(p):
     '''
-        type : int identifier_list TILDE
-             | float identifier_list TILDE 
-             | double identifier_list TILDE 
-             | char identifier_list TILDE 
-             | string identifier_list TILDE 
+        type : INTLIT identifier_list TILDE
+             | FLTLIT identifier_list TILDE 
+             | DBLLIT identifier_list TILDE 
+             | CHRLIT identifier_list TILDE 
+             | STRLIT identifier_list TILDE 
     '''
     p[0] = (p[1], p[2])
 
-def p_optional_statement(p):
+def p_optional_statements(p):
     '''
-        optional_statement: statement_list
-                           | empty 
+        optional_statements : statement_list
+                            | empty 
     '''
 
 def p_statement_list(p):
     '''
-        statement_list : statement
-                       | statement_list statement 
+        statement_list : statements
+                       | statement_list statements 
 
     '''
 def p_if(p):
     '''
-        if  : si OPENPAR expression_list CLOSEPAR statement
-            | si OPENPAR expression_list CLOSEPAR statement else_if
+        if  : si OPENPAR expression_list CLOSEPAR statements
+            | si OPENPAR expression_list CLOSEPAR statements else_if
     '''
 
 def p_else_if(p):
@@ -160,12 +163,6 @@ def p_while(p):
               | mientras OPENPAR expression_list CLOSEPAR TILDE optional_statements TILDE romperse
     '''
 
-def p_comment(p):
-    '''
-        comment : '**' statements comment
-                | '*~' statements '*~' comment
-    '''
-
 def p_classes(p): 
     '''
         classes : clase OPENCURLY identifier_list optional_statements CLOSECURLY
@@ -173,11 +170,40 @@ def p_classes(p):
 
 def p_function_heading(p):
     '''
-        function_heading: explicar OPENPAR parameters TILDE CLOSEPAR
+        function_heading : explicar OPENPAR parameters TILDE CLOSEPAR
     '''
 def p_parameters(p):
     '''
-        parameters: type
-                  | type COMMA parameters
-                  | empty
+        parameters : type
+                   | type COMMA parameters
+                   | empty
     '''
+    
+def p_error(p):
+     print("PARSER ERROR!: ",p)
+
+parser = yacc.yacc()
+
+try:
+  file_input = sys.argv[1];
+  pass
+except Exception as e:
+  print("Missing file input!")
+  print("Try this: python main.py <filename>")
+  sys.exit()
+  
+# Open the input file.
+f = open(file_input, 'r')
+data = f.read()
+f.close()
+
+lexer.input(data)
+print("TOKENS:")
+while True:
+  tok = lexer.token()
+  if not tok: 
+    break
+  print("\t",tok)
+print("\nEVALUATION:")
+
+parser.parse(data)

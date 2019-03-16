@@ -2,6 +2,7 @@
 
 import ply.lex as lex
 import ply.yacc as yacc
+from ply.lex import TOKEN
 import sys
 
 reserved = {
@@ -57,7 +58,8 @@ tokens =[
 	'COMMA',
 	'TILDE',
 	'QUOTATION',
-	'UNDERSCORE'
+	'UNDERSCORE',
+	'COMMENT'
 
 ]
 
@@ -66,13 +68,13 @@ tokens = list(reserved.values()) + list(tokens)
 # Regular expression rules for simple tokens
 t_LT = r'\<'
 t_GT = r'\>'
-t_LEQ = r'\<='
-t_GEQ = r'\>='
-t_EQ = r'\=='
-t_NEQ = r'\!='
+t_LEQ = r'\<\='
+t_GEQ = r'\>\='
+t_EQ = r'\=\='
+t_NEQ = r'\!\='
 t_NOT = r'\!' 
 t_OR = r'\|\|' 
-t_AND = r'\&&' 
+t_AND = r'\&\&' 
 t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_MUL = r'\*'
@@ -122,7 +124,7 @@ def t_newline(t):
 # RegExp for comments: No return value. Token discarded.
 def t_COMMENT(t):
 	r'\*\*'
-	r'\*~.*'
+	r'\*\~\.*'
 	pass
 
 
@@ -132,3 +134,4 @@ def t_error(t):
 
 # Build the lexer
 lexer = lex.lex()
+

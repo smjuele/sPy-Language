@@ -1,16 +1,34 @@
-import lexer
+import ply.lex as lex
+import ply.yacc as yacc
+from ply.lex import TOKEN
 import parser
+import lexer
 import sys
+
+
 def main():
-	content = ""
-	with open("test.lang", "r") as file:
-		content=file.read()
+	try:
+		file_input = sys.argv[1];
+		pass
+	except Exception as e:
+		print("Missing file input!")
+		print("Try this: python main.py <filename>")
+		sys.exit()
+		
+	# Open the input file.
+	f = open(file_input, 'r')
+	data = f.read()
+	f.close()
 
-#build the lexer and parser
-	lex = lexer.lexer(content)
-	parse = parser.parser(content)
+	lexer.input(data)
+	print("TOKENS:")
+	while True:
+		tok = lexer.token()
+		if not tok: 
+			break
+		print("\t",tok)
+	print("\nEVALUATION:")
+	
+	parser.parse(data)
 
-	tokens = lex.tokenize()
-
-main()
  	
