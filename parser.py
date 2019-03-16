@@ -7,34 +7,23 @@ precedence = (
 	('left','MUL','DIV', 'MOD'),
 )
 
-def p_main_program(p):
-	#!/usr/bin/python
-
-import ply.yacc as yacc
-
-precedence = (
-    ('left','PLUS','MINUS'),
-    ('left','MUL','DIV', 'MOD'),
-)
-
-def p_main_program(p):
-    
+def p_main_program(p):    
     '''
-        main_program : comienzo OPENCURLY statement CLOSECURLY fin
+        main_program : comienzo OPENCURLY statements CLOSECURLY fin
                      | comienzo classes fin
                      | comienzo function_heading fin                    
     '''
-def p_statement(p):
+def p_statements(p):
     '''
-        statement  : identifier_list EQ expression
+        statements  : identifier_list EQ expression
                     | introducir type
                     | imprimir OPENPAR identifier_list CLOSEPAR
                     | imprimir QUOTATION identifier_list QUOTATION
                     | regresso OPENPAR expression_list CLOSEPAR
+                    | si OPENPAR expression_list CLOSEPAR otro statements
                     | optional_statements
-                    | while
-                    | si OPENPAR expression_list CLOSEPAR statement
-                    | si OPENPAR expression_list CLOSEPAR statement else_if
+                    | if #ginbutang ko nlg sa isa ka function pra nd tma kdamo py same thought jpon
+                    | while 
                     | comment
     '''
 
@@ -50,7 +39,7 @@ def p_empty(p):
     '''
         empty: 
     '''
-    #p[0] = None
+    p[0] = None
 
 def p_expression(p):
     '''
@@ -65,26 +54,53 @@ def p_expression_list(p):
     '''
 def p_logical_expression(p):
     '''
-        logical_expression  : expression LT expression
-                            | expression GT expression
-                            | expression LEQ expression
-                            | expression GEQ expression
-                            | expression EQ expression
-                            | expression NEQ expression
-                            | expression EQ expression
-                            | expression NOT expression
-                            | expression OR expression
-                            | expression AND expression
+        logical_expression  : expression '<' expression 
+                            | expression '>' expression
+                            | expression '<=' expression
+                            | expression '>=' expression
+                            | expression '=' expression
+                            | expression '!=' expression
+                            | expression '==' expression
+                            | expression '!' expression
+                            | expression '||' expression
+                            | expression '&&' expression
     '''
+    if p[2]=='<':
+        p[0] = p[1] < p[3]
+    elif p[2]=='>':
+        p[0]= p[1] > p[3]
+    elif p[2]=='<=':
+        p[0]= p[1] <= p[3]
+    elif p[2]=='>=':
+        p[0]= p[1] >= p[3]
+    elif p[2]=='==':
+        p[0]= p[1] == p[3]
+    elif p[2]=='!':
+        p[0]= p[1] != p[3]
+    elif p[2]=='||':
+        p[0]= p[1] or p[3]
+    elif p[2]=='&&':
+        p[0]= p[1] and p[3]
 
 def p_arithmetic_expression(p):
     '''
-        airthmetic_expression : expression PLUS expression
-                              |  expression MINUS expression
-                              |  expression MUL expression
-                              |  expression DIV expression
-                              |  expression MOD expression
+        arithmetic_expression : expression '+' expression
+                              |  expression '-' expression
+                              |  expression '*' expression
+                              |  expression '/' expression
+                              |  expression '%' expression
     '''
+    if p[2]=='+':
+        p[0]= p[1] + p[3]
+    elif p[2]=='-':
+        p[0]= p[1] - p[3]
+    elif p[2]=='*':
+        p[0]= p[1] * p[3]
+    elif p[2]=='/':
+        p[0]= p[1] / p[3]
+    elif p[2]=='%':
+        p[0]= p[1] % p[3]
+
 
 def p_type(p):
     '''
@@ -94,6 +110,8 @@ def p_type(p):
              | char identifier_list TILDE 
              | string identifier_list TILDE 
     '''
+    p[0] = (p[1], p[2])
+
 def p_optional_statements(p):
     '''
         optional_statements: statement_list
@@ -102,13 +120,19 @@ def p_optional_statements(p):
 
 def p_statement_list(p):
     '''
-        statement_list : statement
+        statement_list : statements
                        | statement_list statement 
 
     '''
+def p_if(p):
+    '''
+        if  : si OPENPAR expression_list CLOSEPAR statement
+            | si OPENPAR expression_list CLOSEPAR statement else_if
+    '''
+
 def p_else_if(p):
     '''
-        else_if : otro OPENPAR expression CLOSEPAR statement else_if
+        else_if : otro OPENPAR expression CLOSEPAR statements else_if
                 | empty
     '''
 
@@ -120,6 +144,8 @@ def p_while(p):
 
 def p_comment(p):
     '''
+        comment : '**' statements comment
+                | '*~' statements '*~' comment
     '''
 
 def p_classes(p): 
@@ -137,95 +163,3 @@ def p_parameters(p):
                   | type COMMA parameters
                   | empty
     '''
-
-# def p_statement_assign(t):
-#           "statement : IDNAME ASSIGN expression"
-        
-# def p_statement_expr(p):
-#       "statement : expression"
-
-# def p_statement_if_stmt(p):
-#     "if_statement : si OPENPAR  boolean_expression CLOSEPAR statement"
-#     si (p[3]):
-#         p[0] = p[5]
-
-# def p_statement_if_else(p):
-#     'if_statement : si OPENPAR boolean_expression CLOSEPAR statement otro statement'
-#     si (p[3]):
-#         p[5]
-#     otro:
-#         p[7]
-
-# def p_statement_print(t):
-#     'statement : imprimir OPENPAR expression CLOSEPAR'
-#     imprimir(t[3])
-
-# def p_statement_print_string(t):
-#     'statement : imprimir OPENPAR STRING CLOSEPAR'
-#     imprimir(t[3])
-
-# def p_statement_print_var(t):
-#     'statement : VAR ASSIGN expression imprimir OPENPAR VAR CLOSEPAR'
-#     imprimir("Result: ", t[3])
-
-# def p_statement_print_var_string(t):
-#     'statement : VAR ASSIGN STRING imprimir OPENPAR VAR CLOSEPAR'
-#    imprimir("Result: ", t[3])
-
-# def p_expression_plus(p):
-#     'expression : expression PLUS expression'
-#     p[0] = p[1] + p[3]
-
-# def p_expression_minus(p):
-#     'expression : expression MINUS term'
-#     p[0] = p[1] - p[3]
-    
-
-	'''
-		main_program : comienzo OPENCURLY statement CLOSECURLY fin
-					 | comienzo clase fin
-					 | comienzo function_heading fin					
-	'''
-def p_statement_assign(t):
-    		"statement : IDNAME ASSIGN expression"
-		
-
-def p_statement_expr(p):
-		"statement : expression"
-
-def p_statement_if_stmt(p):
-    "if_statement : si OPENPAR  boolean_expression CLOSEPAR statement"
-    si (p[3]):
-        p[0] = p[5]
-
-def p_statement_if_else(p):
-    'if_statement : si OPENPAR boolean_expression CLOSEPAR statement otro statement'
-    si (p[3]):
-        p[5]
-    otro:
-        p[7]
-
-def p_statement_print(t):
-    'statement : imprimir OPENPAR expression CLOSEPAR'
-    imprimir(t[3])
-
-def p_statement_print_string(t):
-    'statement : imprimir OPENPAR STRING CLOSEPAR'
-    imprimir(t[3])
-
-def p_statement_print_var(t):
-    'statement : VAR ASSIGN expression imprimir OPENPAR VAR CLOSEPAR'
-    imprimir("Result: ", t[3])
-
-def p_statement_print_var_string(t):
-    'statement : VAR ASSIGN STRING imprimir OPENPAR VAR CLOSEPAR'
-   imprimir("Result: ", t[3])
-
-def p_expression_plus(p):
-    'expression : expression PLUS expression'
-    p[0] = p[1] + p[3]
-
-def p_expression_minus(p):
-    'expression : expression MINUS term'
-    p[0] = p[1] - p[3]
-	

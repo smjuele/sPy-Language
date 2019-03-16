@@ -21,7 +21,7 @@ reserved = {
 	'break':'romperse',
 	'class':'clase',
 	'def':'explicar',
-	'end_def':'finexplicar'
+	'end_def':'fin_explicar'
 
 }
 
@@ -55,8 +55,8 @@ tokens =[
 	'CLOSEBRACE',
 	'ASSIGN',
 	'COMMA',
-	'TILDE'
-	'QUOTATION'
+	'TILDE',
+	'QUOTATION',
 	'UNDERSCORE'
 
 ]
@@ -66,13 +66,13 @@ tokens = list(reserved.values()) + list(tokens)
 # Regular expression rules for simple tokens
 t_LT = r'\<'
 t_GT = r'\>'
-t_LEQ = r'\<\='
-t_GEQ = r'\>\='
-t_EQ = r'\=\='
-t_NEQ = r'\!\='
+t_LEQ = r'\<='
+t_GEQ = r'\>='
+t_EQ = r'\=='
+t_NEQ = r'\!='
 t_NOT = r'\!' #not on on our paper
-t_OR = r'\|' #not on on our paper
-t_AND = r'\&\&' #not on on our paper
+t_OR = r'\|\|' #not on on our paper
+t_AND = r'\&&' #not on on our paper
 t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_MUL = r'\*'
@@ -86,7 +86,7 @@ t_OPENBRACE = r'\['
 t_CLOSEBRACE = r'\]'
 t_ASSIGN = r'\='
 t_TILDE = r'\~'
-t_QUOTATION = r'\"\"'
+t_QUOTATION = r'\""'
 t_UNDERSCORE = r'\_'
 
 # Ignore whitespaces
@@ -121,6 +121,7 @@ def t_newline(t):
  
 # RegExp for comments: No return value. Token discarded.
 def t_COMMENT(t):
+	r'\*\*'
 	r'\*~.*'
 	pass
 
@@ -128,7 +129,4 @@ def t_COMMENT(t):
 def t_error(t):
 	print("SYNTAX ERROR: Illegal character: '%s' \n\tLine number: %d" (t.value[0], t.lineno))
 	t.lexer.skip(1)
-
-# Build the lexer already did in main.py
-#lexer = lex.lex()
 
