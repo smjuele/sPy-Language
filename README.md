@@ -1,5 +1,4 @@
-# sPy-Language
-CMSC 124 Final Project
+sPy-Language
 sPy is a simple programming language a bit inpired by python and terms used are in S.
 
 It's originally created for CMSC 124 final project, it's current version includes:
