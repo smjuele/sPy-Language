@@ -3,13 +3,13 @@ sPy is a simple programming language a bit inpired by python and terms used are 
 
 It's originally created for CMSC 124 final project, it's current version includes:
 
-  Arithmetic expressions
-  Logical expressions
-  Boolean expressions
-  Defining variables
-  Defining functions
-  Printing to the standard output
-  Reading from the standard input
+  Arithmetic expressions,
+  Logical expressions,
+  Boolean expressions,
+  Defining variables,
+  Defining functions,
+  Printing to the standard output,
+  Reading from the standard input,
   If and while statements
 
 
