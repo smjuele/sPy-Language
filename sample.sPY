@@ -1,1 +1,2 @@
-imprimir("Hello")
+int x = 3 + 4 ~
+imprimir(x) ~

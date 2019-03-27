@@ -28,12 +28,14 @@ def p_statements(p):
     '''
 def p_identifier_list(p):
     '''
-        identifier_list : CHRLIT identifier_list
-                        | STRLIT identifier_list
-                        | INTLIT identifier_list
+        identifier_list : (A|B|C|D|...|Z) identifier_list
+                        | (a|b|c|d|...|Z) identifier_list
+                        | (0|1|2|3|...|9) identifier_list
                         | UNDERSCORE
                         | empty
     '''
+    p[0] = p[1]
+
 def p_empty(p):
     '''
         empty: 
@@ -46,6 +48,7 @@ def p_expression(p):
                     | expression_list COMMA expression
                     | identifier_list
     '''
+    
 def p_expression_list(p):
     '''
         expression_list : logical_expression
@@ -152,7 +155,7 @@ def p_classes(p):
 
 def p_function_heading(p):
     '''
-        function_heading : explicar OPENPAR parameters TILDE CLOSEPAR
+        function_heading : explicar identifier_list OPENPAR parameters TILDE CLOSEPAR statements fin_explicar
     '''
 def p_parameters(p):
     '''
@@ -160,35 +163,8 @@ def p_parameters(p):
                    | type COMMA parameters
                    | empty
     '''
-    
-def p_error(p):
-     print("PARSER ERROR!: ",p)
 
-parser = yacc.yacc()
 
-try:
-  file_input = sys.argv[1];
-  pass
-except Exception as e:
-  print("Missing file input!")
-  print("Try this: python main.py <filename>")
-  sys.exit()
-  
-# Open the input file.
-f = open(file_input, 'r')
-data = f.read()
-f.close()
 
-lexer.input(data)
-print("TOKENS:")
-while True:
-  tok = lexer.token()
-  if not tok: 
-    break
-  print("\t",tok)
-print("\nEVALUATION:")
-
-parser.parse(data)
-
-        function_heading: explicar OPENPAR parameters TILDE CLOSEPAR
+        
 
