@@ -26,7 +26,7 @@ reserved = {
 
 }
 
-tokens =[
+tokens =(
 	'VAR',
 	'LT',
 	'GT',
@@ -60,8 +60,9 @@ tokens =[
 	'QUOTATION',
 	'UNDERSCORE',
 	'COMMENT'
+)
 
-]
+literals = "+-*/"
 
 tokens = list(reserved.values()) + list(tokens) 
 
@@ -88,7 +89,7 @@ t_OPENBRACE = r'\['
 t_CLOSEBRACE = r'\]'
 t_ASSIGN = r'='
 t_TILDE = r'\~'
-t_QUOTATION = r'\""'
+t_QUOTATION = r'\"\"'
 t_UNDERSCORE = r'\_'
 
 # Ignore whitespaces
@@ -134,4 +135,18 @@ def t_error(t):
 
 # Build the lexer
 lexer = lex.lex()
+
+data = '''
+int x = 5+1~
+imprimir(x)~
+ '''
+lexer.input(data)
+print("TOKENS:")
+while True:
+    tok = lexer.token()
+    if not tok: 
+        break
+    print("\t",tok)
+print("\nEVALUATION:")
+
 
