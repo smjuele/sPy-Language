@@ -24,3 +24,8 @@ Step 4 Create pull request
 
 for more understanding read sPy-Language/CMSC-124-AcompaniadoAbaoJuele-Project-Proposal-REVISED.pdf
 
+
+How to run:
+
+#python main.py sample.sPY
+python lexer.py(only)

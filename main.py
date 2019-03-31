@@ -1,8 +1,8 @@
 import ply.lex as lex
 import ply.yacc as yacc
 from ply.lex import TOKEN
-import parser
-import lexer
+from parser import * 
+from lexer import * 
 import sys
 
 

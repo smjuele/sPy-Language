@@ -62,7 +62,7 @@ tokens =(
 	'COMMENT'
 )
 
-literals = "+-*/"
+literals = "+-*/%"
 
 tokens = list(reserved.values()) + list(tokens) 
 
@@ -87,7 +87,7 @@ t_OPENCURLY = r'\{'
 t_CLOSECURLY = r'\}'
 t_OPENBRACE = r'\['
 t_CLOSEBRACE = r'\]'
-t_ASSIGN = r'\='
+t_ASSIGN = r'='
 t_TILDE = r'\~'
 t_QUOTATION = r'\"\"'
 t_UNDERSCORE = r'\_'
@@ -139,14 +139,14 @@ lexer = lex.lex()
 data = '''
 int x = 5+1~
 imprimir(x)~
- '''
+'''
 lexer.input(data)
 print("TOKENS:")
 while True:
-    tok = lexer.token()
-    if not tok: 
-        break
-    print("\t",tok)
+	tok = lexer.token()
+	if not tok: 
+		break
+	print("\t",tok)
 print("\nEVALUATION:")
 
 
