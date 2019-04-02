@@ -1,5 +1,5 @@
 sPy-Language
-sPy is a simple programming language a bit inspired by python and terms used are in S.
+sPy is a simple programming language a bit inspired by python and terms used are in Spanish.
 
 It's originally created for CMSC 124 final project, it's current version includes:
 

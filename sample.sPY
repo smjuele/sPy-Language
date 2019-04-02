@@ -1,2 +1,4 @@
 int x = 3 + 4 ~
 imprimir(x) ~
+introducir x~
+imprimir "HELLO WORLD"~

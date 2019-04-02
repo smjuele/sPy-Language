@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 import ply.lex as lex
 import ply.yacc as yacc
 from ply.lex import TOKEN
@@ -59,7 +58,8 @@ tokens =(
 	'TILDE',
 	'QUOTATION',
 	'UNDERSCORE',
-	'COMMENT'
+	'SINGLE_COMMENT',
+	'MULTI_COMMENT'
 )
 
 literals = "+-*/%"
@@ -87,19 +87,22 @@ t_OPENCURLY = r'\{'
 t_CLOSECURLY = r'\}'
 t_OPENBRACE = r'\['
 t_CLOSEBRACE = r'\]'
-t_ASSIGN = r'='
+t_ASSIGN = r'\='
 t_TILDE = r'\~'
-t_QUOTATION = r'\"\"'
+t_QUOTATION = r'\"'
 t_UNDERSCORE = r'\_'
+
 
 # Ignore whitespaces
 t_ignore = r' '
 
+#float values
 def t_FLTLIT(t):
 	r'\d\.\d+'
 	t.value = float(t.value)
 	return t
 
+#integer values
 def t_INTLIT(t):
 	r'\d+'
 	t.value = int(t.value)
@@ -122,10 +125,14 @@ def t_newline(t):
 	r'\n+'
 	t.lexer.lineno += len(t.value)
  
-# RegExp for comments: No return value. Token discarded.
-def t_COMMENT(t):
-	r'\*\*'
-	r'\*\~\.*'
+# RegExp for single line comments: No return value. Token discarded.
+def t_SINGLE_COMMENT(t):
+	r'\*\*.*'
+	pass
+
+# RegExp for single line comments: No return value. Token discarded.
+def t_MULTI_COMMENT(t):
+	r'\~\*(.|\n)*\*\~'
 	pass
 
 
@@ -135,18 +142,4 @@ def t_error(t):
 
 # Build the lexer
 lexer = lex.lex()
-
-data = '''
-int x = 5+1~
-imprimir(x)~
-'''
-lexer.input(data)
-print("TOKENS:")
-while True:
-	tok = lexer.token()
-	if not tok: 
-		break
-	print("\t",tok)
-print("\nEVALUATION:")
-
 

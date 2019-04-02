@@ -1,34 +1,34 @@
 import ply.lex as lex
 import ply.yacc as yacc
 from ply.lex import TOKEN
-from parser import * 
+from parser import *
 from lexer import * 
-import sys
 
 
-def main():
-	try:
-		file_input = sys.argv[1];
-		pass
-	except Exception as e:
-		print("Missing file input!")
-		print("Try this: python main.py <filename>")
-		sys.exit()
-		
-	# Open the input file.
-	f = open(file_input, 'r')
-	data = f.read()
-	f.close()
+#parser = yacc.yacc()
 
-	lexer.input(data)
-	print("TOKENS:")
-	while True:
-		tok = lexer.token()
-		if not tok: 
-			break
-		print("\t",tok)
-	print("\nEVALUATION:")
+try:
+	file_input = sys.argv[1];
+	pass
+except Exception as e:
+	print("Missing file input!")
+	print("Try this: python main.py <filename>")
+	sys.exit()
 	
-	parser.parse(data)
+# Open the input file.
+f = open(file_input, 'r')
+data = f.read()
+f.close()
+
+lexer.input(data)
+print("TOKENS:")
+while True:
+	tok = lexer.token()
+	if not tok: 
+		break
+	print("\t",tok)
+print("\nEVALUATION:")
+
+#parser.parse(data)
 
  	
