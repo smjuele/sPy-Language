@@ -1,24 +1,25 @@
 #!/usr/bin/python
-import ply.yacc as yacc
-from lexer import *  
+
+from lexer import * 
+import ply.yacc as yacc 
 
 precedence = (
   ('left','PLUS','MINUS'),
   ('left','MUL','DIV', 'MOD'),
 )
 
+
 def p_main_program(p):    
     '''
-        main_program : comienzo OPENCURLY statements CLOSECURLY fin
+        main_program : comienzo OPENCURLY statements TILDE CLOSECURLY fin
                      | comienzo classes fin
-                     | comienzo function_heading fin                    
+                     | comienzo function_heading fin                   
     '''
 def p_statements(p):
     '''
         statements  : identifier_list EQ expression
-                    | introducir type
-                    | imprimir OPENPAR identifier_list CLOSEPAR
-                    | imprimir QUOTATION identifier_list QUOTATION
+                    | introducir identifier_list
+                    | statements_print
                     | regresso OPENPAR expression_list CLOSEPAR
                     | si OPENPAR expression_list CLOSEPAR otro statements
                     | optional_statements
@@ -26,6 +27,15 @@ def p_statements(p):
                     | while 
                     | COMMENT
     '''
+
+def p_statements_print(p):
+    '''
+    statements_print : imprimir OPENPAR identifier_list CLOSEPAR TILDE 
+                     | imprimir QUOTATION identifier_list QUOTATION TILDE
+    '''
+    print(p[3])
+
+
 def p_identifier_list(p):
     '''
         identifier_list : (A|B|C|D|...|Z) identifier_list
@@ -111,7 +121,7 @@ def p_type(p):
              | char identifier_list TILDE 
              | string identifier_list TILDE 
     '''
-    p[0] = (p[1], p[2])
+    p[0] = p[1], p[2]
 
 def p_optional_statements(p):
     '''
@@ -142,21 +152,16 @@ def p_while(p):
               | mientras OPENPAR expression_list CLOSEPAR TILDE optional_statements TILDE romperse
     '''
 
-def p_comment(p):
-    '''
-        comment : '**' statements comment
-                | '*~' statements '*~' comment
-    '''
-
 def p_classes(p): 
     '''
-        classes : clase OPENCURLY identifier_list optional_statements CLOSECURLY
+        classes : clase identifier_list OPENCURLY optional_statements CLOSECURLY
     '''
 
 def p_function_heading(p):
     '''
-        function_heading : explicar identifier_list OPENPAR parameters TILDE CLOSEPAR statements fin_explicar
+        function_heading : explicar identifier_list OPENPAR parameters TILDE CLOSEPAR statements TILDE fin_explicar
     '''
+
 def p_parameters(p):
     '''
         parameters : type
@@ -164,7 +169,9 @@ def p_parameters(p):
                    | empty
     '''
 
-
-
-        
-
+def p_comment(p):
+    '''
+        comment : SINGLE_COMMENT statements
+                | MULTI_COMMENT statements MULTI_COMMENT
+    '''
+    p[0] = None
