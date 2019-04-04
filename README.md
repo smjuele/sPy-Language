@@ -27,5 +27,6 @@ for more understanding read sPy-Language/CMSC-124-AcompaniadoAbaoJuele-Project-P
 
 How to run:
 
-#python main.py sample.sPY
-python lexer.py(only)
+python main.py "file_input"
+python main.py sample.sPY
+
