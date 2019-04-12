@@ -94,7 +94,7 @@ t_QUOTATION = r'\"'
 t_UNDERSCORE = r'\_'
 
 # Ignore whitespaces
-t_ignore = r' t'
+t_ignore = r' \t'
 
 def t_FLTLIT(t):
 	r'\d\.\d+'
@@ -149,6 +149,7 @@ precedence = (
   ('left','PLUS','MINUS'),
   ('left','MUL','DIV', 'MOD'),
 )
+
 
 
 # def p_main_program(p):    
@@ -338,8 +339,12 @@ def p_empty_stmt(t):
     '''empty :  '''
     t[0] = None
 
-def p_statement_loop(p):
-    '''statement : statement statement statement'''
+def p_statement_stmtList(p):
+    '''statement : statement_list'''
+
+def p_statementList(p):
+    '''statement_list : statement
+                      | statement statement_list'''
 
 def p_statement_assign(t):
    '''statement : VAR ASSIGN expression TILDE'''
@@ -348,7 +353,7 @@ def p_statement_expr(t):
     '''statement : expression TILDE'''
 
 def p_statement_function(p):
-    '''statement : def VAR OPENPAR parameter CLOSEPAR statement end_def'''
+    '''statement : def VAR OPENPAR parameter CLOSEPAR OPENCURLY statement  CLOSECURLY end_def'''
 
 def p_parameter_int(t):
     '''parameter : int VAR'''
@@ -393,12 +398,12 @@ def p_statement_if(t):
     '''statement : if_statement'''
 
 def p_statement_if_stmt(p):
-    '''if_statement : if OPENPAR boolean CLOSEPAR statement'''
+    '''if_statement : if OPENPAR boolean CLOSEPAR OPENCURLY statement CLOSECURLY'''
     if (p[3]):
         p[0] = p[5]
 
 def p_statement_if_else(p):
-    '''if_statement : if OPENPAR boolean CLOSEPAR statement else statement'''
+    '''if_statement : if OPENPAR boolean CLOSEPAR OPENCURLY statement CLOSECURLY else OPENCURLY statement CLOSECURLY'''
     if (p[3]):
         p[5]
     else:
@@ -412,31 +417,63 @@ def p_expression_boolean(p):
     '''expression : boolean'''
     p[0] = p[1]
 
-# def p_boolean(p):
-#     '''boolean : expression GT term
-#                | expression GEQ term
-#                | expression LT term
-#                | expression LEQ term
-#                | expression EQ term
-#                | expression NEQ term
-#                | expression AND term
-#                | expression OR term'''
-#     if(p[2] == '>'):
-#       p[0] = p[1] > p[3]
-#     elif(p[2] == '>='):
-#       p[0] = p[1] >= p[3]
-#     elif(p[2] == '<'):
-#       p[0] = p[1] < p[3]
-#     elif(p[2] == '<='):
-#       p[0] = p[1] <= p[3]
-#     elif(p[2] == '=='):
-#       p[0] = p[1] == p[3]
-#     elif(p[2] == '!'):
-#       p[0] = p[1] != p[3]
-#     elif(p[2] == '&&'):
-#       p[0] = p[1] and p[3]
-#     elif(p[2] == '||'):
-#       p[0] = p[1] or  p[3]
+def p_boolean(p):
+    '''boolean : expression GT term
+               | expression GEQ term
+               | expression LT term
+               | expression LEQ term
+               | expression EQ term
+               | expression NEQ term
+               | expression AND term
+               | expression OR term'''
+    if(p[2] == '>'):
+      p[0] = p[1] > p[3]
+    elif(p[2] == '>='):
+      p[0] = p[1] >= p[3]
+    elif(p[2] == '<'):
+      p[0] = p[1] < p[3]
+    elif(p[2] == '<='):
+      p[0] = p[1] <= p[3]
+    elif(p[2] == '=='):
+      p[0] = p[1] == p[3]
+    elif(p[2] == '!'):
+      p[0] = p[1] != p[3]
+    elif(p[2] == '&&'):
+      p[0] = p[1] and p[3]
+    elif(p[2] == '||'):
+      p[0] = p[1] or  p[3]
+
+# def p_expression_GT(p):
+#     '''boolean : expression GT term'''
+#     p[0] = p[1] > p[3]
+
+# def p_expression_GEQ(p):
+#     '''boolean : expression GEQ term'''
+#     p[0] = p[1] >= p[3]
+
+# def p_expression_LT(p):
+#     '''boolean : expression LT term'''
+#     p[0] = p[1] < p[3]
+
+# def p_expression_LEQ(p):
+#     '''boolean : expression LEQ term'''
+#     p[0] = p[1] <= p[3]
+
+# def p_expression_EQ(p):
+#     '''boolean : expression EQ term'''
+#     p[0] = p[1] == p[3]
+
+# def p_expression_NEQ(p):
+#     '''boolean : expression NEQ term'''
+#     p[0] = p[1] != p[3]
+
+# def p_expression_AND(p):
+#     '''boolean : expression AND term'''
+#     p[0] = p[1] and p[3]
+
+# def p_expression_OR(p):
+#     '''boolean : expression OR term'''
+#     p[0] = p[1] or p[3]
 
 def p_expression_PLUS(p):
     '''expression : expression PLUS term'''
@@ -445,38 +482,6 @@ def p_expression_PLUS(p):
 def p_expression_MINUS(p):
     '''expression : expression MINUS term'''
     p[0] = p[1] - p[3]
-
-def p_expression_GT(p):
-    '''boolean : expression GT term'''
-    p[0] = p[1] > p[3]
-
-def p_expression_GEQ(p):
-    '''boolean : expression GEQ term'''
-    p[0] = p[1] >= p[3]
-
-def p_expression_LT(p):
-    '''boolean : expression LT term'''
-    p[0] = p[1] < p[3]
-
-def p_expression_LEQ(p):
-    '''boolean : expression LEQ term'''
-    p[0] = p[1] <= p[3]
-
-def p_expression_EQ(p):
-    '''boolean : expression EQ term'''
-    p[0] = p[1] == p[3]
-
-def p_expression_NEQ(p):
-    '''boolean : expression NEQ term'''
-    p[0] = p[1] != p[3]
-
-def p_expression_AND(p):
-    '''boolean : expression AND term'''
-    p[0] = p[1] and p[3]
-
-def p_expression_OR(p):
-    '''boolean : expression OR term'''
-    p[0] = p[1] or p[3]
 
 def p_term_MUL(p):
     '''term : term MUL factor'''
