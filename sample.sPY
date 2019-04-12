@@ -1,15 +1,25 @@
 comienzo{
-clase bb{
-
-a = 5*(3+1)~
+imprimir (5*3%5)~
+imprimir("Hello World!")~
+a="HELLO WORLD"~
 imprimir(a)~
-imprimir("Hello World")~
 
-si(1<2){
-imprimir("YES")~
-}
+x=9.33+1.11-2.33~
+regresso(x)~
+
+x=("ENTER NUMBER: ")~
+introducir(x)~
+
+clase ifelse{
+
+explicar comparison(){
+si(2>1 || 2>0)
+imprimir("TRUE")~
 otro{
-imprimir("NO")~
+imprimir("FALSE")~
 }
+
+}fin_explicar
+
 }
 }fin

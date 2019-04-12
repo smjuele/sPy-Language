@@ -9,21 +9,20 @@ reserved = {
   'si': 'if',
   'otro': 'else',
   'mientras': 'while',
-  'hacer':'do',
+  #'hacer':'do',
   'regresso':'return',
   'imprimir': 'print',
   'introducir': 'scan',
-  'para': 'for',
-  'avisar':'call',
+  #'para': 'for',
+  #'avisar':'call',
   'es': 'is',
-  'tratar':'try',
+  #'tratar':'try',
   'fin':'end',
   'romperse':'break',
   'clase':'class',
   'explicar':'def',
   'fin_explicar':'end_def',
-  'Int' : 'int',
-  'String' : 'string'
+
 }
 
 tokens =(
@@ -60,7 +59,8 @@ tokens =(
   'QUOTATION',
   'UNDERSCORE',
   'SINGLE_COMMENT',
-  'MULTI_COMMENT'
+  'MULTI_COMMENT',
+  'IS'
 )
 
 literals = ['+','-','*','/','%']
@@ -92,6 +92,7 @@ t_ASSIGN = r'\='
 t_TILDE = r'\~'
 t_QUOTATION = r'\"'
 t_UNDERSCORE = r'\_'
+
 
 # Ignore whitespaces
 t_ignore = r' \t'
@@ -150,185 +151,6 @@ precedence = (
   ('left','MUL','DIV', 'MOD'),
 )
 
-
-
-# def p_main_program(p):    
-#     '''
-#         main_program : start OPENCURLY statements TILDE CLOSECURLY end
-#     '''
-  
-# def p_statements(p):
-#     '''
-#         statements  : expression
-#                     | function_heading
-#                     | classes
-#                     | scan VAR
-#                     | statements_print
-#                     | return OPENPAR expression_list CLOSEPAR
-#                     | optional_statements
-#                     | if_stmt 
-#                     | while_stmt
-#                     | statement_assign
-#                     | comment
-#                     | empty
-#     '''
-
-# def p_statements_print(p):
-#     '''
-#     statements_print : PRINT OPENPAR STRLIT CLOSEPAR
-#                      | PRINT identifier_list
-#     '''
-#     print(p[3])
-
-# def p_identifier_list(p):
-#     '''
-#         identifier_list : VAR identifier_list
-#                         | UNDERSCORE
-#                         | empty
-#     '''
-#     p[0] = p[1]
-    
-# def p_statement_assign(t):
-#   '''  
-#       statement_assign : VAR ASSIGN expression
-
-#   '''
-
-# def p_empty(p):
-#     '''
-#         empty : 
-#     '''
-#     p[0] = None
-
-# def p_expression(p):
-  
-#     '''
-#         expression  : expression_list
-#                     | identifier_list
-#     '''
-    
-# def p_expression_list(p):
-#     '''
-#         expression_list : logical_expression
-#                         | arithmetic_expression
-#     '''
-# def p_logical_expression(p):
-#     '''
-#         logical_expression  : expression '<' expression 
-#                             | expression '>' expression
-#                             | expression LEQ expression
-#                             | expression GEQ expression
-#                             | expression '=' expression
-#                             | expression NEQ expression
-#                             | expression EQ expression
-#                             | expression '!' expression
-#                             | expression OR expression
-#                             | expression AND expression
-#     '''
-#     if p[2]=='<':
-#         p[0] = p[1] < p[3]
-#     elif p[2]=='>':
-#         p[0]= p[1] > p[3]
-#     elif p[2]=='LEQ':
-#         p[0]= p[1] <= p[3]
-#     elif p[2]=='GEQ':
-#         p[0]= p[1] >= p[3]
-#     elif p[2]=='EQ':
-#         p[0]= p[1] == p[3]
-#     elif p[2]=='!':
-#         p[0]= p[1] != p[3]
-#     elif p[2]=='OR':
-#         p[0]= p[1] or p[3]
-#     elif p[2]=='AND':
-#         p[0]= p[1] and p[3]
-
-# def p_arithmetic_expression(p):
-#     '''
-#         arithmetic_expression : expression '+' expression
-#                               |  expression '-' expression
-#                               |  expression '*' expression
-#                               |  expression '/' expression
-#                               |  expression '%' expression
-#     '''
-#     if p[2]=='+':
-#         p[0]= p[1] + p[3]
-#     elif p[2]=='-':
-#         p[0]= p[1] - p[3]
-#     elif p[2]=='*':
-#         p[0]= p[1] * p[3]
-#     elif p[2]=='/':
-#         p[0]= p[1] / p[3]
-#     elif p[2]=='%':
-#         p[0]= p[1] % p[3]
-
-# def p_type(p):
-#     '''
-#         type : INTLIT 
-#              | FLTLIT  
-#              | DBLLIT 
-#              | CHRLIT 
-#              | STRLIT 
-#     '''
-#     p[0] = p[1]
-
-# def p_optional_statements(p):
-#     '''
-#         optional_statements : statement_list
-#                             | empty 
-#     '''
-
-# def p_statement_list(p):
-#     '''
-#         statement_list : statements
-#                        | statement_list statements 
-#     '''
-# def p_if_stmt(p):
-#     '''
-#         if_stmt  : if OPENPAR expression_list CLOSEPAR else statements
-#                  | if OPENPAR expression_list CLOSEPAR statements
-#                  | if OPENPAR expression_list CLOSEPAR statements else_if
-#     '''
-
-# def p_else_if(p):
-#     '''
-#         else_if : else OPENPAR expression CLOSEPAR statements else_if
-#                 | empty
-#     '''
-
-# def p_while_stmt(p):
-#     '''
-#         while_stmt : while OPENPAR expression_list CLOSEPAR TILDE optional_statements TILDE
-#                    | while OPENPAR expression_list CLOSEPAR TILDE optional_statements TILDE break
-#     '''
-
-# def p_classes(p): 
-#     '''
-#         classes : class identifier_list OPENCURLY optional_statements CLOSECURLY
-#     '''
-
-# def p_function_heading(p):
-#     '''
-#         function_heading : def identifier_list OPENPAR parameters TILDE CLOSEPAR statements TILDE end_def
-#     '''
-
-# def p_parameters(p):
-#     '''
-#         parameters : type
-#                    | type COMMA parameters
-#                    | empty
-#     '''
-
-# def p_comment(p):
-#     '''
-#         comment : SINGLE_COMMENT statements
-#                 | MULTI_COMMENT statements MULTI_COMMENT
-#     '''
-#     p[0] = None
-
-  
-# def p_error(p):
-#      print("PARSER ERROR!: ",p)
-
 def p_main_program(p):
     '''main_program : start OPENCURLY statement CLOSECURLY end'''
 
@@ -347,67 +169,93 @@ def p_statementList(p):
                       | statement statement_list'''
 
 def p_statement_assign(t):
-   '''statement : VAR ASSIGN expression TILDE'''
+    '''statement : VAR ASSIGN expression TILDE
+                 | VAR ASSIGN INTLIT TILDE '''
+    t[0]=t[3]
 
 def p_statement_expr(t):
     '''statement : expression TILDE'''
 
 def p_statement_function(p):
-    '''statement : def VAR OPENPAR parameter CLOSEPAR OPENCURLY statement  CLOSECURLY end_def'''
+    '''statement : def VAR OPENPAR CLOSEPAR OPENCURLY statement  CLOSECURLY end_def'''
 
-def p_parameter_int(t):
-    '''parameter : int VAR'''
-
-def p_parameter_string(t):
-    '''parameter : string VAR'''
+def p_func_parameter(t):
+    '''parameter : INTLIT
+                 | STRLIT'''
+    p[0] = p[1]
 
 def p_statement_class(p):
     '''statement : class VAR OPENCURLY statement CLOSECURLY'''
 
 def p_statement_scan(t):
-    '''statement : VAR ASSIGN expression TILDE scan OPENPAR VAR CLOSEPAR TILDE'''
+    '''statement : VAR ASSIGN OPENPAR expression CLOSEPAR TILDE scan OPENPAR VAR CLOSEPAR TILDE'''
 
 def p_statement_scan_string(t):
-    '''statement : VAR ASSIGN STRLIT TILDE scan OPENPAR VAR CLOSEPAR TILDE'''
+    '''statement : VAR ASSIGN OPENPAR STRLIT CLOSEPAR TILDE scan OPENPAR VAR CLOSEPAR TILDE'''
 
 def p_statement_return(t):
     '''statement : VAR ASSIGN expression TILDE return OPENPAR VAR CLOSEPAR TILDE'''
     return(t[3])
+    #List.append(t[3])
 
 def p_statement_return_string(t):
     '''statement : VAR ASSIGN STRLIT TILDE return OPENPAR VAR CLOSEPAR TILDE'''
     return(t[3])
+    #List.append(t[3])
 
 def p_statement_print(t):
     '''statement : print OPENPAR expression CLOSEPAR TILDE'''
     print(t[3])
+    #List.append(t[3])
 
 def p_statement_print_string(t):
     '''statement : print OPENPAR STRLIT CLOSEPAR TILDE'''
     print(t[3])
+    #List.append(t[3])
 
 def p_statement_print_var(t):
     '''statement : VAR ASSIGN expression TILDE print OPENPAR VAR CLOSEPAR TILDE'''
     print(t[3])
+    #List.append(t[3])
 
 def p_statement_print_var_string(t):
     '''statement : VAR ASSIGN STRLIT TILDE print OPENPAR VAR CLOSEPAR TILDE'''
     print(t[3])
+    #List.append(t[3])
 
 def p_statement_if(t):
     '''statement : if_statement'''
 
-def p_statement_if_stmt(p):
+def p_if_statement(p):
     '''if_statement : if OPENPAR boolean CLOSEPAR OPENCURLY statement CLOSECURLY'''
     if (p[3]):
         p[0] = p[5]
+    #List.append(p[0])
 
-def p_statement_if_else(p):
-    '''if_statement : if OPENPAR boolean CLOSEPAR OPENCURLY statement CLOSECURLY else OPENCURLY statement CLOSECURLY'''
-    if (p[3]):
-        p[5]
+def p_if_else(p):
+    '''if_statement : if OPENPAR boolean CLOSEPAR print OPENPAR STRLIT CLOSEPAR TILDE else OPENCURLY print OPENPAR STRLIT CLOSEPAR TILDE CLOSECURLY
+                    | if OPENPAR boolean CLOSEPAR print OPENPAR INTLIT CLOSEPAR TILDE else OPENCURLY print OPENPAR INTLIT CLOSEPAR TILDE CLOSECURLY
+                    | if OPENPAR boolean CLOSEPAR print OPENPAR expression CLOSEPAR TILDE else OPENCURLY print OPENPAR expression CLOSEPAR TILDE CLOSECURLY
+    '''                
+    if (p[3]==True):
+        print(p[7])
+        #if_list.append(p[5])
     else:
-        p[7]
+        print(p[14])
+        #if_list.append(p[8])
+
+# def p_if_else_exp(p):
+#   '''if_statement : if OPENPAR boolean CLOSEPAR print OPENPAR expression CLOSEPAR TILDE else OPENCURLY print OPENPAR expression CLOSEPAR TILDE CLOSECURLY
+#     '''
+
+def p_statement_while(p):
+    '''statement : while_stmt'''
+
+def p_while_stmt(p):
+    '''while_stmt : VAR ASSIGN INTLIT TILDE while OPENPAR boolean CLOSEPAR OPENCURLY statement CLOSECURLY if_statement'''
+    while(p[3]):
+      p[6]
+    p[0] = p[8]
 
 def p_expression_term(p):
     '''expression : term'''
@@ -425,7 +273,8 @@ def p_boolean(p):
                | expression EQ term
                | expression NEQ term
                | expression AND term
-               | expression OR term'''
+               | expression OR term
+               | expression is term'''
     if(p[2] == '>'):
       p[0] = p[1] > p[3]
     elif(p[2] == '>='):
@@ -442,38 +291,8 @@ def p_boolean(p):
       p[0] = p[1] and p[3]
     elif(p[2] == '||'):
       p[0] = p[1] or  p[3]
-
-# def p_expression_GT(p):
-#     '''boolean : expression GT term'''
-#     p[0] = p[1] > p[3]
-
-# def p_expression_GEQ(p):
-#     '''boolean : expression GEQ term'''
-#     p[0] = p[1] >= p[3]
-
-# def p_expression_LT(p):
-#     '''boolean : expression LT term'''
-#     p[0] = p[1] < p[3]
-
-# def p_expression_LEQ(p):
-#     '''boolean : expression LEQ term'''
-#     p[0] = p[1] <= p[3]
-
-# def p_expression_EQ(p):
-#     '''boolean : expression EQ term'''
-#     p[0] = p[1] == p[3]
-
-# def p_expression_NEQ(p):
-#     '''boolean : expression NEQ term'''
-#     p[0] = p[1] != p[3]
-
-# def p_expression_AND(p):
-#     '''boolean : expression AND term'''
-#     p[0] = p[1] and p[3]
-
-# def p_expression_OR(p):
-#     '''boolean : expression OR term'''
-#     p[0] = p[1] or p[3]
+    elif(p[2] == 'es'):
+      p[0] = p[1] == p[3]
 
 def p_expression_PLUS(p):
     '''expression : expression PLUS term'''
@@ -504,7 +323,9 @@ def p_term_factor(p):
     p[0] = p[1]
 
 def p_factor_INT(p):
-    '''factor : INTLIT'''
+    '''factor : INTLIT
+              | FLTLIT
+              | DBLLIT'''
     p[0] = p[1]
 
 def p_factor_expr(p):
@@ -540,7 +361,11 @@ while True:
     print("\t",tok)
 print("\nEVALUATION:")
 
-#print(statementlist)
+# for x in List:
+#   print(List)
+
+# for y in if_list:
+#   print(if_list)
 
 parser.parse(data)
 
