@@ -361,12 +361,6 @@ while True:
     print("\t",tok)
 print("\nEVALUATION:")
 
-# for x in List:
-#   print(List)
-
-# for y in if_list:
-#   print(if_list)
-
 parser.parse(data)
 
 
